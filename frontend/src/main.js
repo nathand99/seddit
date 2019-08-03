@@ -5,12 +5,17 @@
  */
 
 // import your own scripts here.
+import {first_page} from './first.js';
 
 // your app must take an apiUrl as an argument --
 // this will allow us to verify your apps behaviour with 
 // different datasets.
 function initApp(apiUrl) {
   // your app initialisation goes here
+  first_page();
+  //delete everything in root
+  //build a login button to the right
+  
 }
 
 export default initApp;
