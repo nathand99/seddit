@@ -1,2 +1,2 @@
-25/07/19     18:00   18:15   put the first real entry in diary.txt (delete this line!)
+3/08/19     10:00pm   11:00pm   started writing first.js
 
