@@ -1,9 +1,28 @@
-export function login_page() {
+import {logged_in} from './loggedin.js'
+export function login_page(apiUrl) {
     // destroy the page
     const root = document.querySelector("#root");
     while (root.firstChild) {
         root.removeChild(root.firstChild);
     }
+    // header banner
+    const header = document.createElement("header");
+    header.setAttribute("class", "banner");
+    root.appendChild(header);
+    // seddit logo
+    const logo = document.createElement("h1");
+    logo.setAttribute("class", "flex-center");
+    logo.setAttribute("id", "logo");
+    logo.innerHTML = "Seddit";
+    header.appendChild(logo);
+    // seddit
+    const seddit = document.createElement("h1");
+    seddit.setAttribute("class", "flex-center");
+    seddit.innerText = "Seddit";
+    seddit.style.paddingRight = "400px";
+    seddit.style.fontFamily = "Verdana, Geneva, sans-serif";
+    header.appendChild(seddit);
+    // username
     const div1 = document.createElement("div");
     root.appendChild(div1);
     const h1 = document.createElement("h1");
@@ -16,7 +35,7 @@ export function login_page() {
     div1.appendChild(label1);
     const input1 = document.createElement("input");
     div1.appendChild(input1);
-
+    // password
     const div2 = document.createElement("div");
     root.appendChild(div2);
     const label2 = document.createElement("label");
@@ -24,26 +43,63 @@ export function login_page() {
     label2.appendChild(password);
     div2.appendChild(label2);
     const input2 = document.createElement("input");
-    input2.setAttribute("class", "password")
+    input2.setAttribute("type", "password");
     div2.appendChild(input2);
-
+    // submit button
     const submit = document.createElement("button");
     submit.setAttribute("class", "button");
     const button = document.createTextNode("Submit");
     submit.appendChild(button);
     root.appendChild(submit);
+    // error/success
+    const error = document.createElement("div");
+    error.setAttribute("id", "error");
+    root.appendChild(error);
 
     submit.addEventListener('click', (event) => {
-        const BASE_URL = 'https://api.wheretheiss.at/v1';
-        const output = document.getElementById('output');
-        const locationUri = `${BASE_URL}/satellites/25544`;
-
-        fetch(locationUri)
-        .then(r => r.json())
-        .then(r => {
-      const { latitude, longitude } = r;
-      const coUri = `${BASE_URL}/coordinates/${latitude},${longitude}`;
-      return fetch(coUri);
-    })
-    });
+        const user = input1.value;
+        const pass = input2.value;
+        let auth = "";
+        fetch(`${apiUrl}/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: user,
+                password: pass
+            })
+        }).then(response => {
+            return response.json();
+        }).then((json) => {
+            console.log(json);
+            const newdiv = document.querySelector("#error");
+            while (newdiv.firstChild) {
+                newdiv.removeChild(newdiv.firstChild);
+            }         
+            newdiv.setAttribute("class", "")
+            // if there is a message, there is an error
+            if (json.message) {
+                let result = "";
+                if (json.message === "Malformed Request") {
+                    result = document.createTextNode("One or more fields have an error Please try again");
+                } else {
+                    result = document.createTextNode(json.message + ". Please try again");
+                }
+                newdiv.appendChild(result);
+                newdiv.setAttribute("class", "error")
+                root.appendChild(newdiv);
+            // no message means no error - log them in then take them to their feed
+            } else {
+                const result = document.createTextNode("Login success: You will now be logged in");
+                newdiv.appendChild(result);
+                newdiv.setAttribute("class", "success")
+                root.appendChild(newdiv);
+                auth = json.token;
+                window.setTimeout(function() {
+                    logged_in(apiUrl, auth)
+                }, 2000);
+            }
+        })
+    });   
 }

@@ -14,9 +14,7 @@ import {signup_page} from './signup.js';
 // different datasets.
 function initApp(apiUrl) {
   // your app initialisation goes here
-  first_page();
-  //delete everything in root
-  //build a login button to the right
+  first_page(apiUrl);
   
 }
 

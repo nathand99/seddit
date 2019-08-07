@@ -1,7 +1,8 @@
 import {login_page} from './login.js';
 import {signup_page} from './signup.js';
+import { create_feed } from './create_feed.js';
 
-export function first_page() {
+export function first_page(apiUrl) {
     // delete all children of root (clear the page)
     const root = document.querySelector("#root");
     while (root.firstChild) {
@@ -17,6 +18,13 @@ export function first_page() {
     title.setAttribute("id", "logo");
     title.innerHTML = "Seddit";
     header.appendChild(title);
+
+    const seddit = document.createElement("h1");
+    seddit.setAttribute("class", "flex-center");
+    seddit.innerText = "Seddit";
+    seddit.style.paddingRight = "400px";
+    seddit.style.fontFamily = "Verdana, Geneva, sans-serif";
+    header.appendChild(seddit);
     
     const login = document.createElement("button");
     login.setAttribute("data-id-login", "");
@@ -30,18 +38,14 @@ export function first_page() {
     signup.innerHTML = "Sign up";
     header.appendChild(signup);
 
-    const body = document.createElement("body");
-    body.setAttribute("id", "feed");
-    const h3 = document.createElement("h3");
-    h3.innerHTML = "Post";
-    body.appendChild(h3);
-    root.appendChild(body);
+    // create feed as a public user
+    create_feed(apiUrl, "");
 
     login.addEventListener('click', (event) => {
-        login_page();
+        login_page(apiUrl);
     });
 
     signup.addEventListener('click', (event) => {
-        signup_page();
+        signup_page(apiUrl);
     });
 }

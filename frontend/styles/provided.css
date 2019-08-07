@@ -129,4 +129,26 @@ footer > * {
   margin: 0;
 }
 
-/* Add your styles here */
+.error {
+  border: solid red;
+  border-width: thin;
+  margin: 10px 0px;
+  max-width: 250px;
+  padding:12px;
+  background-color: rgb(240, 174, 174);
+  color: red;
+  text-align: center;
+  font-weight: 500;
+}
+
+.success {
+  border: solid rgb(0, 255, 55);
+  border-width: thin;
+  margin: 10px 0px;
+  max-width: 320px;
+  padding:12px;
+  background-color: rgb(178, 248, 169);
+  color: green;
+  text-align: center;
+  font-weight: 560;
+}
