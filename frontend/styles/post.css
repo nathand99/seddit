@@ -10,6 +10,7 @@
 .post .vote {
   width: 120px;
   background-color: var(--reddit-light-grey);
+  font-size: 16px;
 }
 
 .post-content {
@@ -48,4 +49,8 @@
 
 .likes-div {
   display: flex;
+}
+
+.who-div {
+  background-color: rgb(211, 211, 211);
 }

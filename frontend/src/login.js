@@ -13,12 +13,13 @@ export function login_page(apiUrl) {
     const logo = document.createElement("h1");
     logo.setAttribute("class", "flex-center");
     logo.setAttribute("id", "logo");
-    logo.innerHTML = "Seddit";
+    const sedditText = document.createTextNode("Seddit");
+    logo.appendChild(sedditText);
     header.appendChild(logo);
     // seddit
     const seddit = document.createElement("h1");
     seddit.setAttribute("class", "flex-center");
-    seddit.innerText = "Seddit";
+    seddit.appendChild(sedditText);
     seddit.style.paddingRight = "400px";
     seddit.style.fontFamily = "Verdana, Geneva, sans-serif";
     header.appendChild(seddit);
@@ -98,7 +99,7 @@ export function login_page(apiUrl) {
                 auth = json.token;
                 window.setTimeout(function() {
                     logged_in(apiUrl, auth)
-                }, 2000);
+                }, 1000);
             }
         })
     });   
