@@ -1,4 +1,6 @@
 import {create_feed} from './create_feed.js'
+import {make_post} from './make_post.js'
+import {profile} from './profile.js'
 export function logged_in(apiUrl, auth) {
     // delete all children of root (clear the page)
     const root = document.querySelector("#root");
@@ -16,6 +18,36 @@ export function logged_in(apiUrl, auth) {
     title.innerHTML = "Seddit";
     header.appendChild(title);
 
+    const sedditText = document.createTextNode("Seddit");
+
+    const seddit = document.createElement("h1");
+    seddit.setAttribute("class", "flex-center");
+    seddit.appendChild(sedditText);
+    seddit.style.paddingRight = "400px";
+    seddit.style.fontFamily = "Verdana, Geneva, sans-serif";
+    header.appendChild(seddit);
+    seddit.style.paddingRight = "400px";
+
+    const post = document.createElement("button");
+    post.setAttribute("class", "button button-primary");
+    const postText = document.createTextNode("Post")
+    post.appendChild(postText);
+    header.appendChild(post);
+
+    const profileB = document.createElement("button");
+    profileB.setAttribute("class", "button button-primary");
+    const profileText = document.createTextNode("Profile")
+    profileB.appendChild(profileText);
+    header.appendChild(profileB);
+
     // create user's feed
     create_feed(apiUrl, auth);
+
+    post.addEventListener('click', (event) => {
+        make_post(apiUrl, auth);
+    });
+
+    profileB.addEventListener('click', (event) => {
+        profile(apiUrl, auth);
+    });
 }

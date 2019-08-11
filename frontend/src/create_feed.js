@@ -1,4 +1,4 @@
-// creates feed: given the apiurl and auth token. if auth = "", make public feed
+// creates feed for logged in user
 export function create_feed(apiUrl, auth) {
     // create feed
     const feed = document.createElement("div");
@@ -20,7 +20,6 @@ export function create_feed(apiUrl, auth) {
         console.log(json.posts[1]);
         let i = 0;
         while (json.posts[i]) {
-            //posts.push(json.posts[i].id);
             // create div new div to hold post
             const postDiv = document.createElement("div");
             postDiv.setAttribute("class", "post");
@@ -67,13 +66,52 @@ export function create_feed(apiUrl, auth) {
             postText.appendChild(text);
             postDiv.appendChild(postText);
             //img
-            if (json.posts[i].image != null) {
+            if (json.posts[i].image !== null && json.posts[i].image !== "") {
                 const img = document.createElement("img");  
                 img.setAttribute("class", "post-img");    
                 img.src = "data:image/jpeg;base64," + json.posts[i].image;
                 postDiv.appendChild(img);
             }   
-            
+            //like button
+            const likeButtonDiv = document.createElement("div");
+            postDiv.appendChild(likeButtonDiv);
+            const likeButton = document.createElement("button");            
+            const like = document.createTextNode("Like");
+            likeButton.appendChild(like);
+            const unlikeButton = document.createElement("button");
+            const unlike = document.createTextNode("Unlike");
+            unlikeButton.appendChild(unlike);
+            likeButtonDiv.appendChild(likeButton);
+            likeButtonDiv.appendChild(unlikeButton);
+            const postId = json.posts[i].id;
+            // like a post
+            likeButton.addEventListener('click', (event) => {
+                fetch(`${apiUrl}/post/vote/?id=${postId}`, {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Token ${auth}`
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then((json) => {
+                    console.log("upvoted!");
+                    console.log(json);
+                });
+            });
+            // unlike a post
+            unlikeButton.addEventListener('click', (event) => {
+                fetch(`${apiUrl}/post/vote/?id=${postId}`, {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Token ${auth}`
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then((json) => {
+                    console.log("unliked!");
+                    console.log(json);
+                });
+            });
             // div to hold likes and comments
             const likesDiv = document.createElement("div");
             likesDiv.setAttribute("class", "likes-div");
@@ -91,12 +129,13 @@ export function create_feed(apiUrl, auth) {
             // comments
             const postCom = document.createElement("button");
             postCom.setAttribute("class", "post vote");
+            postCom.setAttribute("id", `com${json.posts[i].id}`);
             const com = document.createTextNode(`Comments: ${json.posts[i].comments.length}`);
             postCom.appendChild(com);
             likesDiv.appendChild(postCom);
             // div to who liked and commented
             const whoDiv = document.createElement("div");
-            likesDiv.setAttribute("class", "who-div");
+            //likesDiv.setAttribute("class", "who-div");
             postDiv.appendChild(whoDiv);
             // people who liked
             const postLikesList = document.createElement("div");
@@ -118,6 +157,32 @@ export function create_feed(apiUrl, auth) {
                 });
                 whoDiv.appendChild(postLikesList);
             });
+            // people who commented
+            const postLikesComments = document.createElement("div");
+            postLikesComments.setAttribute("hidden", "");
+            postLikesComments.setAttribute("id", `c${json.posts[i].id}`);
+            whoDiv.appendChild(postLikesComments);
+            json.posts[i].comments.forEach(element => {
+                const commentDiv = document.createElement("div");
+                commentDiv.setAttribute("class", "who-div");
+                postLikesComments.appendChild(commentDiv);
+                const commentAuth = document.createElement("p");
+                const author = document.createTextNode(element.author);
+                commentAuth.appendChild(author);
+                commentDiv.appendChild(commentAuth);
+                const commentTime = document.createElement("p");
+                const dateObj = new Date(element.published * 1000); 
+                const utcString = dateObj.toUTCString(); 
+                const time = document.createTextNode(utcString);
+                commentTime.appendChild(time);
+                commentDiv.appendChild(commentTime);
+                const commentTextBox = document.createElement("div");
+                const commentText = document.createElement("p");
+                const text = document.createTextNode(element.comment);
+                commentText.appendChild(text);
+                commentTextBox.appendChild(commentText);
+                commentDiv.appendChild(commentTextBox);
+            });
             i++;
         }
         // make an event lister for every like button. When pressed, disables/enables
@@ -132,9 +197,21 @@ export function create_feed(apiUrl, auth) {
                 } else {
                     thePost.setAttribute("hidden", "");
                 }
-                
-                // if post hidden, remove hiddenensss
-                // else make hidden
+            });
+        });
+
+        posts.forEach(element => {
+            const comment_button = document.getElementById(`com${element}`);
+            comment_button.addEventListener('click', (event) => {
+                console.log(element);
+                const thePost = document.getElementById(`c${element}`);
+                if (thePost.hidden === true) {
+                    thePost.removeAttribute("hidden");
+                    //thePost.setAttribute("active", "");
+                    // do something with button when its pressed
+                } else {
+                    thePost.setAttribute("hidden", "");
+                }
             });
         });
     })

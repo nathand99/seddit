@@ -65,7 +65,7 @@ export function create_feed_public(apiUrl, auth) {
             postText.appendChild(text);
             postDiv.appendChild(postText);
             //img
-            if (json.posts[i].image != null) {
+            if (json.posts[i].image !== null && json.posts[i].image !== "") {
                 const img = document.createElement("img");  
                 img.setAttribute("class", "post-img");    
                 img.src = "data:image/jpeg;base64," + json.posts[i].image;

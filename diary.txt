@@ -13,5 +13,17 @@ continued trying to connect login and sign up to the backend, trying to figure o
 7/08/19     12:00pm   10:00pm
 signup and login works with error + success messages which look pretty good. Automatically take you to user feed after login/signup. Posts in the feed have good style now. Added a seddit title to the banner of every page. Also split code into different files: loggedin and create_feed. Subset 1 completed
 
+9/08/19     6:00pm   11:00pm
+shows who liked the post when you click on number of likes
+
+10/08/19     12:00pm   3:00pm
+shows comments on a post when you click comments. There is now a like button and unlike button for a user to like/unlike a post. Started making the "make a post" function
+
+10/08/19     6:00pm   12:00am
+6 hours spent on converting uploaded image to base64....at least it works
+
+11/08/19     1:00pm   8:00pm
+users can view their profile and also update their profile
+
 
 
