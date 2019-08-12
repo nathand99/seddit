@@ -72,7 +72,7 @@ export function create_feed(apiUrl, auth) {
                 img.src = "data:image/jpeg;base64," + json.posts[i].image;
                 postDiv.appendChild(img);
             }   
-            //like button
+            //like, unlike and comment button
             const likeButtonDiv = document.createElement("div");
             postDiv.appendChild(likeButtonDiv);
             const likeButton = document.createElement("button");            
@@ -83,6 +83,10 @@ export function create_feed(apiUrl, auth) {
             unlikeButton.appendChild(unlike);
             likeButtonDiv.appendChild(likeButton);
             likeButtonDiv.appendChild(unlikeButton);
+            const commentButton = document.createElement("button");
+            const comm = document.createTextNode("Comment");
+            commentButton.appendChild(comm);
+            likeButtonDiv.appendChild(commentButton);
             const postId = json.posts[i].id;
             // like a post
             likeButton.addEventListener('click', (event) => {
@@ -111,6 +115,46 @@ export function create_feed(apiUrl, auth) {
                     console.log("unliked!");
                     console.log(json);
                 });
+            });
+            // div for user to add comment
+            const addDiv = document.createElement("div");
+            postDiv.appendChild(addDiv);
+            addDiv.setAttribute("hidden", "");
+            const commentInput = document.createElement("textarea");
+            commentInput.style.height="100px";
+            commentInput.style.width="700px";
+            addDiv.appendChild(commentInput);
+            const comSubmit = document.createElement("button");
+            const submitText = document.createTextNode("Submit")
+            comSubmit.appendChild(submitText);
+            addDiv.appendChild(comSubmit);
+            // comment button toggles the addDiv
+            commentButton.addEventListener('click', (event) => {
+                if (addDiv.hidden === true) {
+                    addDiv.removeAttribute("hidden");
+                } else {
+                    addDiv.setAttribute("hidden", "");
+                }
+            });
+            // submit the comment
+            comSubmit.addEventListener('click', (event) => {
+                if (commentInput.value !== "") {
+                    fetch(`${apiUrl}/post/comment/?id=${postId}`, {
+                        method: "PUT",
+                        headers: {
+                            Authorization: `Token ${auth}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            comment: commentInput.value
+                        })
+                    }).then(response => {
+                        return response.json();
+                    }).then((json) => {
+                        console.log(json);
+                        // add in a message saying that the post was posted
+                    });
+                }
             });
             // div to hold likes and comments
             const likesDiv = document.createElement("div");
