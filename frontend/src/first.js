@@ -24,17 +24,17 @@ export function first_page(apiUrl) {
     const seddit = document.createElement("h1");
     seddit.setAttribute("class", "flex-center");
     seddit.appendChild(sedditText);
-    seddit.style.paddingRight = "400px";
+    seddit.style.paddingRight = "1100px";
     seddit.style.fontFamily = "Verdana, Geneva, sans-serif";
     header.appendChild(seddit);
-    
+    // login button
     const login = document.createElement("button");
     login.setAttribute("data-id-login", "");
     login.setAttribute("class", "button button-primary");
     const loginText = document.createTextNode("Log In")
     login.appendChild(loginText);
     header.appendChild(login);
-
+    // signup button
     const signup = document.createElement("button");
     signup.setAttribute("data-id-signup", "");
     signup.setAttribute("class", "button button-primary");

@@ -1,5 +1,6 @@
 import {logged_in} from './loggedin.js'
 import {edit_profile} from './edit_profile.js'
+// show the users information
 export function profile(apiUrl, auth) {
     // delete all children of root (clear the page)
     const root = document.querySelector("#root");
@@ -43,7 +44,6 @@ export function profile(apiUrl, auth) {
     }).then(response => {
         return response.json();
     }).then((json) => {
-        console.log(json);
         // id
         const id = document.createElement("div");
         const idText = document.createTextNode(`ID: ${json.id}`);

@@ -1,4 +1,6 @@
 import {logged_in} from './loggedin.js'
+import {first_page} from './first.js'
+// this is a login page
 export function login_page(apiUrl) {
     // destroy the page
     const root = document.querySelector("#root");
@@ -10,17 +12,17 @@ export function login_page(apiUrl) {
     header.setAttribute("class", "banner");
     root.appendChild(header);
     // seddit logo
+    const sedditText = document.createTextNode("Seddit");
     const logo = document.createElement("h1");
     logo.setAttribute("class", "flex-center");
     logo.setAttribute("id", "logo");
-    const sedditText = document.createTextNode("Seddit");
-    logo.appendChild(sedditText);
+    logo.innerText = "seddit";
+    //logo.appendChild(sedditText);
     header.appendChild(logo);
     // seddit
     const seddit = document.createElement("h1");
     seddit.setAttribute("class", "flex-center");
     seddit.appendChild(sedditText);
-    seddit.style.paddingRight = "400px";
     seddit.style.fontFamily = "Verdana, Geneva, sans-serif";
     header.appendChild(seddit);
     // username
@@ -46,9 +48,15 @@ export function login_page(apiUrl) {
     const input2 = document.createElement("input");
     input2.setAttribute("type", "password");
     div2.appendChild(input2);
+    // back button
+    const back = document.createElement("button");
+    back.setAttribute("class", "button button-primary");
+    const backText = document.createTextNode("back")
+    back.appendChild(backText);
+    root.appendChild(back);
     // submit button
     const submit = document.createElement("button");
-    submit.setAttribute("class", "button");
+    submit.setAttribute("class", "button button-primary");
     const button = document.createTextNode("Submit");
     submit.appendChild(button);
     root.appendChild(submit);
@@ -73,7 +81,6 @@ export function login_page(apiUrl) {
         }).then(response => {
             return response.json();
         }).then((json) => {
-            console.log(json);
             const newdiv = document.querySelector("#error");
             while (newdiv.firstChild) {
                 newdiv.removeChild(newdiv.firstChild);
@@ -103,4 +110,7 @@ export function login_page(apiUrl) {
             }
         })
     });   
+    back.addEventListener('click', (event) => {
+        first_page(apiUrl);
+    });
 }

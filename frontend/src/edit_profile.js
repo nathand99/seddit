@@ -1,4 +1,5 @@
 import {profile} from './profile.js'
+// edit the users profile
 export function edit_profile(apiUrl, auth) {
     // destroy the page
     const root = document.querySelector("#root");
@@ -94,10 +95,8 @@ export function edit_profile(apiUrl, auth) {
             },
             body: JSON.stringify(payload)
         }).then(response => {
-            console.log(response);
             return response.json();
-        }).then((json) => {
-            console.log(json);  
+        }).then((json) => { 
             const newdiv = document.querySelector("#error");
             while (newdiv.firstChild) {
                 newdiv.removeChild(newdiv.firstChild);

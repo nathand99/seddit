@@ -1,4 +1,6 @@
 import {logged_in} from './loggedin.js'
+import {first_page} from './first.js'
+// this is a signup page
 export function signup_page(apiUrl) {
     // destroy the page
     const root = document.querySelector("#root");
@@ -31,7 +33,7 @@ export function signup_page(apiUrl) {
     div.appendChild(h1);
     // username
     const label1 = document.createElement("label");
-    const username = document.createTextNode("Username");
+    const username = document.createTextNode("Username*");
     label1.appendChild(username);
     div.appendChild(label1);
     const input1 = document.createElement("input");
@@ -40,7 +42,7 @@ export function signup_page(apiUrl) {
     const div2 = document.createElement("div");
     root.appendChild(div2);
     const label2 = document.createElement("label");
-    const password = document.createTextNode("Password");
+    const password = document.createTextNode("Password*");
     label2.appendChild(password);
     div2.appendChild(label2);
     const input2 = document.createElement("input");
@@ -64,9 +66,15 @@ export function signup_page(apiUrl) {
     div4.appendChild(label4);
     const input4 = document.createElement("input");
     div4.appendChild(input4);
+    // back button
+    const back = document.createElement("button");
+    back.setAttribute("class", "button button-primary");
+    const backText = document.createTextNode("back")
+    back.appendChild(backText);
+    root.appendChild(back);
     // submit
     const submit = document.createElement("button");
-    submit.setAttribute("class", "button");
+    submit.setAttribute("class", "button button-primary");
     const button = document.createTextNode("Submit");
     submit.appendChild(button);
     root.appendChild(submit);
@@ -89,10 +97,8 @@ export function signup_page(apiUrl) {
                 name: input4.value
             })
         }).then(response => {
-            console.log(response);
             return response.json();
         }).then((json) => {
-            console.log(json);  
             const newdiv = document.querySelector("#error");
             while (newdiv.firstChild) {
                 newdiv.removeChild(newdiv.firstChild);
@@ -122,5 +128,8 @@ export function signup_page(apiUrl) {
                   }, 2000);
             }
         })
+    });
+    back.addEventListener('click', (event) => {
+        first_page(apiUrl);
     });
 }

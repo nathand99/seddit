@@ -1,12 +1,11 @@
 export function create_feed_public(apiUrl, auth) {
-    // create feed
+    // create feed for non-logged-in users
     const feed = document.createElement("div");
     feed.setAttribute("id", "feed");
     const h3 = document.createElement("h4");
     h3.innerText = "Popular posts";
     feed.appendChild(h3);
     root.appendChild(feed);
-    let posts = [];
     // not logged it
     fetch(`${apiUrl}/post/public`, {
         method: "GET",
@@ -16,7 +15,6 @@ export function create_feed_public(apiUrl, auth) {
     }).then(response => {
         return response.json();
     }).then((json) => {
-        console.log(json.posts[1]);
         let i = 0;
         while (json.posts[i]) {
             // create div new div to hold post
@@ -91,5 +89,4 @@ export function create_feed_public(apiUrl, auth) {
             i++;
         }
     })
-    // logged in
 }

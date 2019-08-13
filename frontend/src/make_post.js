@@ -1,3 +1,5 @@
+import {logged_in} from './loggedin.js'
+// form to make a post
 export function make_post(apiUrl, auth) {
     // delete all children of root (clear the page)
     const root = document.querySelector("#root");
@@ -71,9 +73,15 @@ export function make_post(apiUrl, auth) {
     input4.setAttribute("id", "image");
     div4.appendChild(input4);
     div.appendChild(div4);
+    // back button
+    const back = document.createElement("button");
+    back.setAttribute("class", "button button-primary");
+    const backText = document.createTextNode("back")
+    back.appendChild(backText);
+    root.appendChild(back);
     // submit
     const submit = document.createElement("button");
-    submit.setAttribute("class", "button");
+    submit.setAttribute("class", "button button-primary");
     const button = document.createTextNode("Submit");
     submit.appendChild(button);
     root.appendChild(submit);
@@ -82,20 +90,14 @@ export function make_post(apiUrl, auth) {
     error.setAttribute("id", "error");
     root.appendChild(error);
 
-   // var file = document.querySelector('#files > input[type="file"]').files[0];
-   // getBase64(file).then(
-    //data => console.log(data)
-    //);
-
     submit.addEventListener('click', (event) => {
         const selectedFile = document.getElementById('image').files[0];
-        var realURL = "";
         getBase64(selectedFile).then(
             data => { //console.log(data){
-            console.log(data);
+            //console.log(data);
             //data.replace("data:image/png;base64,", "");
             const newD = data.slice(22);
-            console.log(newD);
+            //console.log(newD);
             fetch(`${apiUrl}/post`, {
                 method: "POST",
                 headers: {
@@ -109,10 +111,10 @@ export function make_post(apiUrl, auth) {
                     image: newD
                 })
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 return response.json();
             }).then((json) => {
-                console.log(json);  
+                //console.log(json);  
                 const newdiv = document.querySelector("#error");
                 while (newdiv.firstChild) {
                     newdiv.removeChild(newdiv.firstChild);
@@ -121,7 +123,7 @@ export function make_post(apiUrl, auth) {
                 // if there is a message, there is an error
                 if (json.message) {
                     let result = "";
-                    console.log(json.message);
+                    //console.log(json.message);
                     if (json.message === "Malformed request") {
                         result = document.createTextNode("One or more fields have an error Please try again");
                     } else {
@@ -138,12 +140,14 @@ export function make_post(apiUrl, auth) {
                     root.appendChild(newdiv);
                 }
             })
-        });
-        
+        });        
     });
-    
+    back.addEventListener('click', (event) => {
+        logged_in(apiUrl, auth);
+    });    
 }
 
+// from the lecture slides
 function getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

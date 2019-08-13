@@ -17,7 +17,6 @@ export function create_feed(apiUrl, auth) {
     }).then(response => {
         return response.json();
     }).then((json) => {
-        console.log(json.posts[1]);
         let i = 0;
         while (json.posts[i]) {
             // create div new div to hold post
@@ -98,8 +97,6 @@ export function create_feed(apiUrl, auth) {
                 }).then(response => {
                     return response.json();
                 }).then((json) => {
-                    console.log("upvoted!");
-                    console.log(json);
                 });
             });
             // unlike a post
@@ -112,8 +109,6 @@ export function create_feed(apiUrl, auth) {
                 }).then(response => {
                     return response.json();
                 }).then((json) => {
-                    console.log("unliked!");
-                    console.log(json);
                 });
             });
             // div for user to add comment
@@ -122,12 +117,18 @@ export function create_feed(apiUrl, auth) {
             addDiv.setAttribute("hidden", "");
             const commentInput = document.createElement("textarea");
             commentInput.style.height="100px";
-            commentInput.style.width="700px";
+            commentInput.style.width="745px";
             addDiv.appendChild(commentInput);
             const comSubmit = document.createElement("button");
             const submitText = document.createTextNode("Submit")
             comSubmit.appendChild(submitText);
             addDiv.appendChild(comSubmit);
+            const msgtag = document.createElement("div");
+            addDiv.appendChild(msgtag);
+            msgtag.setAttribute("class", "success");
+            msgtag.setAttribute("hidden", "");
+            const comSuc = document.createTextNode("Successfully posted comment");
+            msgtag.appendChild(comSuc);
             // comment button toggles the addDiv
             commentButton.addEventListener('click', (event) => {
                 if (addDiv.hidden === true) {
@@ -151,8 +152,7 @@ export function create_feed(apiUrl, auth) {
                     }).then(response => {
                         return response.json();
                     }).then((json) => {
-                        console.log(json);
-                        // add in a message saying that the post was posted
+                        msgtag.removeAttribute("hidden");
                     });
                 }
             });
@@ -168,7 +168,6 @@ export function create_feed(apiUrl, auth) {
             postLikes.setAttribute("id", `post${json.posts[i].id}`);
             postLikes.appendChild(likes);
             likesDiv.appendChild(postLikes);
-            console.log(json.posts[i].id);
             posts.push(json.posts[i].id);            
             // comments
             const postCom = document.createElement("button");
@@ -211,15 +210,11 @@ export function create_feed(apiUrl, auth) {
                 commentDiv.setAttribute("class", "who-div");
                 postLikesComments.appendChild(commentDiv);
                 const commentAuth = document.createElement("p");
-                const author = document.createTextNode(element.author);
-                commentAuth.appendChild(author);
-                commentDiv.appendChild(commentAuth);
-                const commentTime = document.createElement("p");
                 const dateObj = new Date(element.published * 1000); 
                 const utcString = dateObj.toUTCString(); 
-                const time = document.createTextNode(utcString);
-                commentTime.appendChild(time);
-                commentDiv.appendChild(commentTime);
+                const time = document.createTextNode(`${element.author} posted at ${utcString}:`);
+                commentAuth.appendChild(time);
+                commentDiv.appendChild(commentAuth);
                 const commentTextBox = document.createElement("div");
                 const commentText = document.createElement("p");
                 const text = document.createTextNode(element.comment);
@@ -234,7 +229,6 @@ export function create_feed(apiUrl, auth) {
         posts.forEach(element => {
             const like_button = document.getElementById(`post${element}`);
             like_button.addEventListener('click', (event) => {
-                console.log(element);
                 const thePost = document.getElementById(`l${element}`);
                 if (thePost.hidden === true) {
                     thePost.removeAttribute("hidden");
@@ -247,7 +241,6 @@ export function create_feed(apiUrl, auth) {
         posts.forEach(element => {
             const comment_button = document.getElementById(`com${element}`);
             comment_button.addEventListener('click', (event) => {
-                console.log(element);
                 const thePost = document.getElementById(`c${element}`);
                 if (thePost.hidden === true) {
                     thePost.removeAttribute("hidden");

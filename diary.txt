@@ -25,5 +25,11 @@ shows comments on a post when you click comments. There is now a like button and
 11/08/19     1:00pm   8:00pm
 users can view their profile and also update their profile
 
+12/08/19     11:00pm   12:00am
+users can now comment on a post
+
+13/08/19     11:00pm   2:00pm
+finishing up, cleaning up code. Would love to do infinite scroll but not enough time
+
 
 
